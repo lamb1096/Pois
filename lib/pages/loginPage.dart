@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pois/pages/poiListPage.dart';
 import 'package:pois/pages/poiPage.dart';
 import 'package:pois/pages/registerPage.dart';
 
@@ -10,6 +12,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  var _emailTextController = TextEditingController();
+  var _passwordTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final logo = Hero(
@@ -18,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     final email = TextFormField(
+      controller: _emailTextController,
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
       decoration: InputDecoration(
@@ -28,6 +34,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     final password = TextFormField(
+      controller: _passwordTextController,
       autofocus: false,
       obscureText: true,
       decoration: InputDecoration(
@@ -43,10 +50,23 @@ class _LoginPageState extends State<LoginPage> {
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color.fromARGB(255, 66, 66, 66),
         ),
-        onPressed: () {
-          Navigator.pop(context);
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const PoiPage()));
+        onPressed: () async {
+          try {
+            final credential = await FirebaseAuth.instance
+                .signInWithEmailAndPassword(
+                    email: _emailTextController.text,
+                    password: _passwordTextController.text);
+
+            Navigator.pop(context);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const PoiListPage()));
+          } on FirebaseAuthException catch (e) {
+            if (e.code == 'user-not-found') {
+              print('No user found for that email.');
+            } else if (e.code == 'wrong-password') {
+              print('Wrong password provided for that user.');
+            }
+          }
         },
         child:
             const Text('Iniciar sesion', style: TextStyle(color: Colors.white)),

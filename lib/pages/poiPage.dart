@@ -3,7 +3,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class PoiPage extends StatefulWidget {
-  const PoiPage({super.key});
+  var poi;
+  PoiPage({this.poi});
 
   @override
   State<PoiPage> createState() => _PoiPageState();
@@ -18,15 +19,15 @@ class _PoiPageState extends State<PoiPage> {
         padding: EdgeInsets.all(16.0),
         child: Icon(
           Icons.image,
-          size: 250,
+          size: 200,
         ),
       ),
     );
 
-    const welcome = Padding(
+    final welcome = Padding(
       padding: EdgeInsets.all(8.0),
       child: Text(
-        'Nombre POI',
+        widget.poi["nombre"],
         style: TextStyle(
             fontSize: 28.0,
             color: Color.fromARGB(255, 0, 0, 0),
@@ -37,23 +38,17 @@ class _PoiPageState extends State<PoiPage> {
     final fields = Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
         child: Column(
-          children: const [
-            Text("Ciudad: XXXXXXX",
-                style: TextStyle(
-                    fontSize: 16.0, color: Color.fromARGB(255, 122, 122, 122))),
-            Text("Departamento: XXXXXXX",
-                style: TextStyle(
-                    fontSize: 16.0, color: Color.fromARGB(255, 122, 122, 122))),
-            Text("Temperatura: XX",
+          children: [
+            Text(widget.poi["puntuacion"].toString(),
                 style: TextStyle(
                     fontSize: 16.0, color: Color.fromARGB(255, 122, 122, 122))),
           ],
         ));
 
-    const lorem = Padding(
+    final lorem = Padding(
       padding: EdgeInsets.fromLTRB(40, 10, 40, 0),
       child: Text(
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec hendrerit condimentum mauris id tempor. Praesent eu commodo lacus. Praesent eget mi sed libero eleifend tempor. Sed at fringilla ipsum. Duis malesuada feugiat urna vitae convallis. Aliquam eu libero arcu.',
+        widget.poi["descripcion"],
         style: TextStyle(
             fontSize: 16.0, color: Color.fromARGB(255, 122, 122, 122)),
       ),

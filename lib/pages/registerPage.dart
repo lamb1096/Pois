@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pois/pages/loginPage.dart';
+import 'package:pois/pages/poiListPage.dart';
 import 'package:pois/pages/poiPage.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -10,6 +13,11 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  var _emailTextController = TextEditingController();
+  var _passwordTextController = TextEditingController();
+  var _password2TextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final logo = Hero(
@@ -18,6 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
 
     final email = TextFormField(
+      controller: _emailTextController,
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
       decoration: InputDecoration(
@@ -28,6 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
 
     final password = TextFormField(
+      controller: _passwordTextController,
       autofocus: false,
       obscureText: true,
       decoration: InputDecoration(
@@ -38,6 +48,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
 
     final rePassword = TextFormField(
+      controller: _password2TextController,
       autofocus: false,
       obscureText: true,
       decoration: InputDecoration(
@@ -53,10 +64,33 @@ class _RegisterPageState extends State<RegisterPage> {
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color.fromARGB(255, 66, 66, 66),
         ),
-        onPressed: () {
-          Navigator.pop(context);
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const PoiPage()));
+        onPressed: () async {
+          if (_passwordTextController.text == _password2TextController.text) {
+            try {
+              final credential =
+                  await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                email: _emailTextController.text,
+                password: _password2TextController.text,
+              );
+
+              await db.collection("usuarios").doc().set({
+                "email": _emailTextController.text,
+                "contraseña": _password2TextController.text
+              }).onError((e, _) => print("Error writing document: $e"));
+
+              Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const PoiListPage()));
+            } on FirebaseAuthException catch (e) {
+              if (e.code == 'weak-password') {
+                print('The password provided is too weak.');
+              } else if (e.code == 'email-already-in-use') {
+                print('The account already exists for that email.');
+              }
+            } catch (e) {
+              print(e);
+            }
+          }
         },
         child: const Text('Registrar', style: TextStyle(color: Colors.white)),
       ),

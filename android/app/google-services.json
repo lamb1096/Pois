@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "817966952542",
+    "project_id": "pois-e3f88",
+    "storage_bucket": "pois-e3f88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817966952542:android:fd356abd6997832778c4cf",
+        "android_client_info": {
+          "package_name": "com.example.pois"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "817966952542-3lfu1h61tomlsom2vgqrdiem5mg771ol.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJGuAGlstyWwSwiyKq2tguwbk_DBW-zU0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817966952542-3lfu1h61tomlsom2vgqrdiem5mg771ol.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
