@@ -52,10 +52,10 @@ class _LoginPageState extends State<LoginPage> {
         ),
         onPressed: () async {
           try {
-            // final credential = await FirebaseAuth.instance
-            //     .signInWithEmailAndPassword(
-            //         email: _emailTextController.text,
-            //         password: _passwordTextController.text);
+            final credential = await FirebaseAuth.instance
+                .signInWithEmailAndPassword(
+                    email: _emailTextController.text,
+                    password: _passwordTextController.text);
 
             Navigator.pop(context);
             Navigator.push(context,
