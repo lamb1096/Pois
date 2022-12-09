@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:pois/pages/poiListFavoritePage.dart';
 import 'package:pois/pages/poiPage.dart';
 
 class PoiListPage extends StatefulWidget {
@@ -22,9 +23,26 @@ class _PoiListPageState extends State<PoiListPage> {
           if (snapshot.hasData) {
             return Scaffold(
                 appBar: AppBar(
-                    title: const Text("Sitios turisticos",
+                  title: Row(children: [
+                    const Text("Sitios turisticos",
                         style: TextStyle(color: Colors.white)),
-                    backgroundColor: const Color.fromARGB(255, 178, 178, 212)),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 66, 66, 66),
+                      ),
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PoiListFavoritePage()));
+                      },
+                      child: const Text('Favoritos',
+                          style: TextStyle(color: Colors.white)),
+                    )
+                  ]),
+                  backgroundColor: const Color.fromARGB(255, 178, 178, 212),
+                ),
                 body: ListView.separated(
                   padding: const EdgeInsets.all(8),
                   itemCount: snapshot.data!.docs.length,
